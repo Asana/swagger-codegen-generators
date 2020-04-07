@@ -183,7 +183,7 @@ public class AsanaTypeScriptClientCodegen extends TypeScriptAngularClientCodegen
 
             if (op.queryParams != null) {
                 reverse(op.queryParams);
-                List<String> commonParams = Arrays.asList(new String[]{"opt_pretty", "opt_fields", "limit", "offset"});
+                List<String> commonParams = Arrays.asList(new String[]{"opt_pretty", "opt_fields", "offset"});
 
                 op.queryParams.removeIf(queryParam -> commonParams.contains(queryParam.baseName));
                 
