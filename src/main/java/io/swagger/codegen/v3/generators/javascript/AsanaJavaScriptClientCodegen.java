@@ -35,6 +35,13 @@ import static java.util.Collections.sort;
 import java.io.IOException;
 
 public class AsanaJavaScriptClientCodegen extends JavaScriptClientCodegen {
+    public AsanaJavaScriptClientCodegen() {
+        super();
+
+        apiDocPath = "samples";
+        apiDocTemplateFiles.put("api_doc.mustache", ".yaml");
+    }
+
     @Override
     public String getName() {
         return "asana-node";
@@ -103,6 +110,13 @@ public class AsanaJavaScriptClientCodegen extends JavaScriptClientCodegen {
             public Object apply(final Object a, final Options options) throws IOException {
                 String s = (String)a;
                 return snakeCase(s.toLowerCase());
+            }
+        });
+
+        handlebars.registerHelper("toLowerCase", new Helper<Object>() {
+            @Override
+            public Object apply(final Object a, final Options options) throws IOException {
+                return ((String)a).toLowerCase();
             }
         });
     }
@@ -243,6 +257,14 @@ public class AsanaJavaScriptClientCodegen extends JavaScriptClientCodegen {
         name = name.replaceAll("-", "_");
 
         return snakeCase(name);
+    }
+
+    @Override
+    public String toApiDocFilename(String name) {
+        // replace - with _ e.g. created-at => created_at
+        name = name.replaceAll("-", "_");
+
+        return snakeCase(name) + "_sample";
     }
 
     @Override

@@ -35,6 +35,13 @@ import static java.util.Collections.sort;
 import java.io.IOException;
 
 public class AsanaPythonClientCodegen extends PythonClientCodegen {
+    public AsanaPythonClientCodegen() {
+        super();
+
+        apiDocTemplateFiles.put("api_doc.mustache", ".yaml");
+        apiDocPath = "samples";
+    }
+
     @Override
     public void addHandlebarHelpers(Handlebars handlebars) {
         super.addHandlebarHelpers(handlebars);
@@ -236,6 +243,16 @@ public class AsanaPythonClientCodegen extends PythonClientCodegen {
 
         // e.g. PhoneNumberApi.py => phone_number_api.py
         return underscore(name);
+    }
+
+
+    @Override
+    public String toApiDocFilename(String name) {
+        // replace - with _ e.g. created-at => created_at
+        name = name.replaceAll("-", "_");
+
+        // e.g. PhoneNumberApi.py => phone_number_api.py
+        return underscore(name) + "_sample";
     }
 
     @Override

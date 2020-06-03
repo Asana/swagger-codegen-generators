@@ -132,13 +132,13 @@ public class AsanaTypeScriptClientCodegen extends TypeScriptAngularClientCodegen
                         split[i] = "%s";
                     }
                 }
-        
+
                 String processedPath = String.join("/", split);
                 return processedPath;
             }
         });
     }
-    
+
     @Override
     public Map<String, Object> postProcessOperations(Map<String, Object> operations) {
         Map<String, Object> objs = (Map<String, Object>) operations.get("operations");
@@ -186,7 +186,7 @@ public class AsanaTypeScriptClientCodegen extends TypeScriptAngularClientCodegen
                 List<String> commonParams = Arrays.asList(new String[]{"opt_pretty", "opt_fields", "offset"});
 
                 op.queryParams.removeIf(queryParam -> commonParams.contains(queryParam.baseName));
-                
+
                 sort(op.queryParams, new Comparator<CodegenParameter>() {
                     @Override
                     public int compare(CodegenParameter one, CodegenParameter another) {

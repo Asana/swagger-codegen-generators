@@ -31,13 +31,14 @@ public class AsanaRubyClientCodegen extends PythonClientCodegen {
     public AsanaRubyClientCodegen() {
         super();
 
+        apiDocPath = "samples";
         modelPackage = "models";
         apiPackage = "api";
         outputFolder = "generated-code" + File.separator + "ruby";
         modelTemplateFiles.put("model.mustache", ".rb");
         apiTemplateFiles.put("api.mustache", ".rb");
         modelDocTemplateFiles.put("model_doc.mustache", ".md");
-        apiDocTemplateFiles.put("api_doc.mustache", ".md");
+        apiDocTemplateFiles.put("api_doc.mustache", ".yaml");
         embeddedTemplateDir = templateDir = "ruby-client";
 
         // default HIDE_GENERATION_TIMESTAMP to true
@@ -204,6 +205,17 @@ public class AsanaRubyClientCodegen extends PythonClientCodegen {
                 return options.hash("no", false);
             }
         });
+        handlebars.registerHelper("fixSearchParams", new Helper<Object>() {
+            @Override
+            public Object apply(final Object a, final Options options) throws IOException {
+                String paramName = (String)a;
+                if (paramName.endsWith("_any") || paramName.endsWith("_not") || paramName.endsWith("_all")) {
+                    return paramName.substring(0, paramName.length() - 4) + "." + paramName.substring(paramName.length() - 3);
+                } else {
+                    return paramName;
+                }
+            }
+        });
     }
 
     @Override
@@ -348,6 +360,15 @@ public class AsanaRubyClientCodegen extends PythonClientCodegen {
 
         // e.g. PhoneNumberApi.py => phone_number_api.py
         return underscore(name) + "_base";
+    }
+
+    @Override
+    public String toApiDocFilename(String name) {
+        // replace - with _ e.g. created-at => created_at
+        name = name.replaceAll("-", "_");
+
+        // e.g. PhoneNumberApi.py => phone_number_api.py
+        return underscore(name) + "_sample";
     }
 
     @Override

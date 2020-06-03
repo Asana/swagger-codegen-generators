@@ -4,14 +4,9 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
 import com.github.jknack.handlebars.TagType;
+import io.swagger.codegen.v3.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import io.swagger.codegen.v3.generators.handlebars.java.JavaHelper;
-import io.swagger.codegen.v3.CodegenConstants;
-import io.swagger.codegen.v3.CodegenModel;
-import io.swagger.codegen.v3.CodegenOperation;
-import io.swagger.codegen.v3.CodegenParameter;
-import io.swagger.codegen.v3.CodegenProperty;
-import io.swagger.codegen.v3.CodegenType;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.Operation;
@@ -37,7 +32,11 @@ public class AsanaPhpClientCodegen extends PhpClientCodegen {
     public AsanaPhpClientCodegen() {
         super();
         apiPackage = invokerPackage + "\\" + "Gen";
+
+        apiDocTemplateFiles.put("api_doc.mustache", ".yaml");
+        apiDocPath = "samples";
     }
+
     @Override
     public void addHandlebarHelpers(Handlebars handlebars) {
         super.addHandlebarHelpers(handlebars);
@@ -236,12 +235,12 @@ public class AsanaPhpClientCodegen extends PhpClientCodegen {
         return camelize(name) + "Base";
     }
 
-    public String apiTestFilename(String templateName, String tag) {
-        return "test/" + toApiFilename(templateName);
-    }
+    @Override
+    public String toApiDocFilename(String name) { return camelize(name) + "Sample"; }
 
     public String apiDocFilename(String templateName, String tag) {
-        return "docs/" + toApiFilename(templateName);
+        String suffix = apiDocTemplateFiles().get(templateName);
+        return apiDocPath + "/" + toApiDocFilename(tag) + suffix;
     }
 
     @Override

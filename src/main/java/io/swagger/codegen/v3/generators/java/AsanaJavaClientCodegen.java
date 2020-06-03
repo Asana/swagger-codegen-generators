@@ -43,6 +43,12 @@ import static java.util.Collections.sort;
 import java.io.IOException;
 
 public class AsanaJavaClientCodegen extends JavaClientCodegen {
+    public AsanaJavaClientCodegen() {
+        super();
+
+        this.apiDocPath = "samples";
+    }
+
     @Override
     public String getName() {
         return "asana-java";
@@ -204,6 +210,12 @@ public class AsanaJavaClientCodegen extends JavaClientCodegen {
                         : "";
             }
         });
+        handlebars.registerHelper("toLowerCase", new Helper<Object>() {
+            @Override
+            public Object apply(final Object a, final Options options) throws IOException {
+                return ((String)a).toLowerCase();
+            }
+        });
     }
 
     @Override
@@ -217,6 +229,11 @@ public class AsanaJavaClientCodegen extends JavaClientCodegen {
     @Override
     public String toApiFilename(String name) {
         return toApiName(name);
+    }
+
+    @Override
+    public String toApiDocFilename(String name) {
+        return toApiName(name) + "Sample";
     }
 
     @Override
@@ -479,5 +496,10 @@ public class AsanaJavaClientCodegen extends JavaClientCodegen {
             accepts = DEFAULT_CONTENT_TYPE;
         }
         return accepts;
+    }
+
+    @Override
+    public String apiDocFilename(String templateName, String tag) {
+        return this.apiDocFileFolder() + '/' + this.toApiDocFilename(tag) + ".yaml";
     }
 }
