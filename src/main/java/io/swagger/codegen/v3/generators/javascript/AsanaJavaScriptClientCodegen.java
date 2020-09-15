@@ -97,6 +97,17 @@ public class AsanaJavaScriptClientCodegen extends JavaScriptClientCodegen {
                 return options.hash("yes", true);
             }
         });
+        handlebars.registerHelper("toAsanaCamelCase", new Helper<Object>() {
+            @Override
+            public Object apply(final Object a, final Options options) throws IOException {
+                String s = (String)a;
+                s = camelize(s);
+                if (s.endsWith("Api")) {
+                    s = s.substring(0, s.length()-3) + s.substring(s.length()-3).toUpperCase();
+                }
+                return s;
+            }
+        });
         handlebars.registerHelper("toCamelCase", new Helper<Object>() {
             @Override
             public Object apply(final Object a, final Options options) throws IOException {
