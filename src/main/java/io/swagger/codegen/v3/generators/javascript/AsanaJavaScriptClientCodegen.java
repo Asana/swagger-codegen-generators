@@ -105,6 +105,7 @@ public class AsanaJavaScriptClientCodegen extends JavaScriptClientCodegen {
                 if (s.endsWith("Api")) {
                     s = s.substring(0, s.length()-3) + s.substring(s.length()-3).toUpperCase();
                 }
+                s = s.substring(0,1).toLowerCase() + s.substring(1);
                 return s;
             }
         });
